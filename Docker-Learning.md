@@ -21,3 +21,6 @@ a storage disk that is attached to the container. If container is stopped then t
 with volume attached if container stoped or deleted the data stays in the volume and that volume can
 be attached to different container to get the same data back up and running. To access the data it needs
 to be attached and mounted to the container
+
+
+For example you downloaded the latest version of python and also python version 2. Then you can run two different application or same application with two different versions of python by creating container of each image of python versions.
