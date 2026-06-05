@@ -17,3 +17,20 @@ pull the mysql image
 now pull the specific version of the mysql image
 make container for each and give that containers a name
 delete it
+
+
+Now run the images and also specify the port and bind it with 
+the container
+
+
+create the docker network 
+now attach the network with container
+
+for example:
+docker run -d -p 27017:27017 --name mongo --network mongo-network -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=qwerty mongo
+
+-d for detach
+-p for port binding
+--name for giving container the name
+--network To accah the existing network to the container
+-e for enviroment variables
