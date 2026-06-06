@@ -75,3 +75,36 @@ Docker compose also creates the network for our containers so we don't need to d
 
 
 Docker is also used to dockerizing the application meaning that if everything is runnning well in your computer and now you want to share it with team member or someone else they will download the docker image you created and run it by creating the container of their own and it will run same as it ran in your computer
+
+This can be done by creating the Dockerfile in the project folder and the file will contain the following:
+
+
+
+
+
+
+Docker volumes - It is bacisally an storage disk attaches to our volume to store data. If its not attached then the container which collected data for databas, app data etc it will disapper after we stop the container becuase it doesn't have the permenant data storage attached.
+
+Volume can be attached and accesed by mounting with the container.
+so even though we delete the volume or stop it the data won't disapper
+
+This volumes can be shared by muntiple containers
+
+So mounting works by creating a directory in the container and creating the directory in your host machine and mounting them together so, we basicallly saying whatever goes in the container folder, the host user will be able to access it outside of the container as well as inside of the container.
+for example: folder in cointainer /test/data
+             foler in host machine /desktop/data
+
+             if we do mounting then it becomes /desktop/data:/test/data
+
+
+
+
+
+Network bridge driver is what helps muntiple containers coummunicate between each other and also outside (internet). It drivers is not specified then it is using the default network with bridge driver.
+
+There are tow type od drivers one is default and another one is custom by creating the network for containers so that the containers inside the custome network wont need any port or anything else to communicate with each other because they are bridged in on network
+
+
+There is also host network 
+
+and finally there is null network this is used to create a complet isolate container that can't communicate with anything. 

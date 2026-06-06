@@ -123,3 +123,69 @@ docker compose -f <compose.yaml-file> down
 To stop the containers and to delete the containers and network
 which it created and run.
 
+
+
+
+To dockerizing the app we need the dockerfile and this command
+
+docker build -t <app-name>:<version-tag> .
+
+to create the image of the docker container with the tag and app name
+
+
+Now login into the docker account by
+
+docker login
+
+
+and then push your image into the docker hub by
+
+docker push <account-username>/<image-name>
+
+
+
+
+
+Docker Volume
+
+docker run -it -v <host-path>:<container-path> <image-name>
+
+this command will run the image as a container in a intreactive (terminal)
+mode but this time it will also create a volume (storage drive) and attach to container and host machine 
+
+the path is to provide where to store date whoch directory. In host machine path and also in container path
+
+
+docker volume ls
+
+To list all the volumes exists in your docker desktop 
+
+
+docker create <volume-name>
+
+To create a volume with a name of your choise
+Now by default if you create a volume it will store it in your 
+machine at /var/lib/docker/volumes
+which can be used to attach to a container
+
+
+docker volume rm <volume-name>
+
+To remove volume from your docker
+
+there is another wat to bind the volumes that was created by
+
+
+doecker run -v <volume-name>:<container-path> <image-name>
+
+
+
+docker run -v <container-path> <image-name>
+
+To create ananymous named volume in your docker 
+Docker will manage the volume and it will give name to it
+
+
+docker volume prune
+
+To remove any unused volume 

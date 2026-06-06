@@ -34,3 +34,6 @@ docker run -d -p 27017:27017 --name mongo --network mongo-network -e MONGO_INITD
 --name for giving container the name
 --network To accah the existing network to the container
 -e for enviroment variables
+
+
+create a container and mount the voulme then delete the container but the data will still exists.
