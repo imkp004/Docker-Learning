@@ -1,153 +1,298 @@
-# Docker Commands
+Here’s a cleaned-up, GitHub-ready version with clearer wording, consistent formatting, and a bit more precision.
 
-docker pull `image-name`
+***
 
-- To get the latest version of the existing image from your local docker desktop (if exists) or from the docker hub (like github cloning)
+# Docker Commands Cheat Sheet
 
-docker pull `image-name`:`version`
+## Basic Image Commands
 
--To get the specific version of the existing image from your local docker desktop (if exists) or from the docker hub.
+**Pull the latest image**
 
+```bash
+docker pull <image-name>
+```
+
+Pulls the latest version of an image from Docker Hub (or another registry). If the image already exists locally, it will update it to the newest version.
+
+**Pull a specific image version**
+
+```bash
+docker pull <image-name>:<tag>
+```
+
+Pulls a specific tagged version of an image (for example, `nginx:1.27`).
+
+**List local images**
+
+```bash
 docker images
+```
 
--To get the all the images there is in your docker desktop locally.
+Shows all images that are stored locally on your Docker host.
 
-docker run `image-name`
+***
 
-- To run the image and now it will automatically create a container
-that starts running and gives output
+## Container Lifecycle Commands
 
-docker run -it `image-name`
+**Run an image (create + start a container)**
 
--This command will helps us get the intericative output of the continer.
-The image will run and it will create the container and then it will also
-help us access the container terminal.
+```bash
+docker run <image-name>
+```
 
+Creates a new container from the image and runs it in the foreground. When the main process exits, the container stops.
+
+**Run a container in interactive mode**
+
+```bash
+docker run -it <image-name>
+```
+
+Creates a container and attaches your terminal to it interactively (stdin/stdout). Useful for debugging or exploring the container.
+
+**List containers**
+
+```bash
 docker ps
+```
 
--Tp see all the running containers in your docker desktop
--while <docker ps -a> to see all the existing containers in the docker desktop
+Shows all *running* containers.
 
-docker stop `container-name` or `container-id`
+```bash
+docker ps -a
+```
 
-- To stop the running container
+Shows all containers, including stopped ones.
 
-docker start `container-name` or `container-id`
+**Stop a running container**
 
-- To start the container running
+```bash
+docker stop <container-id>   # or <container-name>
+```
 
-docker rmi `image-name`
+Gracefully stops a running container.
 
-- To remove the image from the docker desktop
+**Start a stopped container**
 
-docker rm `container-name`
+```bash
+docker start <container-id>  # or <container-name>
+```
 
-- To remove the container from the docker desktop
+Starts an existing (stopped) container.
 
-docker run -d `image-name`
+**Remove a container**
 
-- To run the image container in the detach mode basically run it in background. by default it runs in foreground
+```bash
+docker rm <container-id>     # or <container-name>
+```
 
-docker run -d --name `tag-name` `image-name`
+Deletes a container. The container must be stopped first.
 
-- This will give your container a name which you chose. By default it
-give a random name to the container
+**Remove an image**
 
-docker run -p 8080:3306 `image-name`
+```bash
+docker rmi <image-name>      # or <image-id>
+```
 
-To run the image and also mapping the host machine port to the container
-port. Basically binding (permanent attaching) host port to container port.
+Deletes an image from your local system. No containers may be using it.
 
-docker logs `container-id` or `container-name`
+***
 
-To check all the logs of the container. It is mainly used for
-troubleshooting cause
+## Running Containers: Useful Flags
 
-docker exec -it `container-id` /bin/bash
+**Run in detached (background) mode**
 
-or
+```bash
+docker run -d <image-name>
+```
 
-docker exec -it `container-id` /bin/sh
+Runs the container in the background (detached). Your terminal is not attached to its output.
 
-This command is used to get the terminal of the container and run
-commands in it. Not every container will have bash then we can use sh (shell)
-To check the environment variables or to check the dependencies installed.
-And when exit from the shell it won't stop the container, It will keep on running.
+**Run in detached mode with a custom container name**
+
+```bash
+docker run -d --name <container-name> <image-name>
+```
+
+Runs the container in the background and assigns it a human-readable name.
+
+**Map host port to container port**
+
+```bash
+docker run -p <host-port>:<container-port> <image-name>
+```
+
+Binds a port on your host machine to a port inside the container (for example, `-p 8080:80`).
+
+***
+
+## Logs and Shell Access
+
+**View container logs**
+
+```bash
+docker logs <container-id>   # or <container-name>
+```
+
+Shows the logs produced by the container’s main process. Very useful for troubleshooting.
+
+You can also follow logs in real time with:
+
+```bash
+docker logs -f <container-id>
+```
+
+**Get a shell inside a running container**
+
+```bash
+docker exec -it <container-id> /bin/bash
+# or
+docker exec -it <container-id> /bin/sh
+```
+
+Starts an interactive shell inside an already running container. Exiting the shell does *not* stop the container.
+
+***
 
 ## Docker Network Commands
 
+**List networks**
+
+```bash
 docker network ls
+```
 
-To list all the network exists in the docker system
+Shows all Docker networks available on the host.
 
-docker network create `network-name`
+**Create a network**
 
-To create a new network in your docker system with a name
+```bash
+docker network create <network-name>
+```
 
-docker network rm `network-name`
+Creates a new user-defined network.
 
-To remove the network from your docker system
+**Remove a network**
 
-Docker Compose commands
+```bash
+docker network rm <network-name>
+```
 
-docker compose -f <compose.yaml-file> up -d
+Deletes a network. It must not be in use by any containers.
 
-This command is to run the compose file in the project that contains
-the docker image information and that will run and it will create the
-containers automatically in a detach mode-(running in background)
+***
 
-docker compose -f <compose.yaml-file> down
+## Docker Compose Commands
 
-To stop the containers and to delete the containers and network
-which it created and run.
+**Start services from a Compose file**
 
-To dockerizing the app we need the dockerfile and this command
+```bash
+docker compose -f <compose-file> up -d
+```
 
-docker build -t `app-name`:`version-tag` .
+Creates and starts all services defined in the given Compose file (`docker-compose.yml` / `compose.yaml`) in detached mode.
 
-to create the image of the docker container with the tag and app name
+**Stop and remove services**
 
-Now login into the docker account by
+```bash
+docker compose -f <compose-file> down
+```
 
+Stops containers and removes containers, networks, and default volumes created by `up`.
+
+***
+
+## Building and Pushing Images
+
+**Build an image from a Dockerfile**
+
+```bash
+docker build -t <image-name>:<tag> .
+```
+
+Builds an image using the Dockerfile in the current directory and tags it (for example, `my-app:1.0`).
+
+**Log in to a Docker registry**
+
+```bash
 docker login
+```
 
-and then push your image into the docker hub by
+Authenticates your Docker client with Docker Hub or another registry.
 
-docker push `account-username`/`image-name`
+**Push an image to a registry**
 
-## Docker Volume
+```bash
+docker push <username>/<image-name>:<tag>
+```
 
-docker run -it -v `host-path`:`container-path` `image-name`
+Pushes your image to Docker Hub (or another registry), making it available to pull on other machines.
 
-this command will run the image as a container in an interactive (terminal)
-mode but this time it will also create a volume (storage drive) and attach to container and host machine
+***
 
-the path is to provide where to store data which directory. In host machine path and also in container path
+## Docker Volumes (Persistent Data)
 
+**Run a container with a bind mount**
+
+```bash
+docker run -it -v <host-path>:<container-path> <image-name>
+```
+
+Mounts a host directory into the container. Changes in the container path are reflected on the host, and vice versa.
+
+**List volumes**
+
+```bash
 docker volume ls
+```
 
-To list all the volumes exists in your docker desktop
+Shows all named Docker volumes.
 
-docker volume create `volume-name`
+**Create a named volume**
 
-To create a volume with a name of your choice
-Now by default if you create a volume it will store it in your
-machine at /var/lib/docker/volumes
-which can be used to attach to a container
+```bash
+docker volume create <volume-name>
+```
 
-docker volume rm `volume-name`
+Creates a managed Docker volume (stored under `/var/lib/docker/volumes` by default).
 
-To remove volume from your docker
+**Remove a named volume**
 
-there is another way to bind the volumes that was created by
+```bash
+docker volume rm <volume-name>
+```
 
-docker run -v `volume-name`:`container-path` `image-name`
+Deletes a volume that is not currently in use by any container.
 
-docker run -v `container-path` `image-name`
+**Run a container with a named volume**
 
-To create anonymous named volume in your docker
-Docker will manage the volume and it will give name to it
+```bash
+docker run -v <volume-name>:<container-path> <image-name>
+```
 
+Attaches an existing named volume (or creates it if it doesn’t exist) to the container path.
+
+**Run a container with an anonymous volume**
+
+```bash
+docker run -v <container-path> <image-name>
+```
+
+Creates an anonymous (unnamed) volume managed by Docker and mounts it at the given path inside the container.
+
+**Remove unused volumes**
+
+```bash
 docker volume prune
+```
 
-To remove any unused volume
+Removes all unused (dangling) volumes to free space.
+
+***
+
+If you want, I can wrap this into a markdown file structure like:
+
+- `README.md` with a short intro  
+- `docker-commands.md` for this cheat sheet  
+
+so you can drop it straight into a GitHub repo.
