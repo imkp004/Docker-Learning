@@ -290,9 +290,21 @@ Removes all unused (dangling) volumes to free space.
 
 ***
 
-If you want, I can wrap this into a markdown file structure like:
 
-- `README.md` with a short intro  
-- `docker-commands.md` for this cheat sheet  
 
-so you can drop it straight into a GitHub repo.
+## Docker Buildx (muilti-platform-build)
+
+```bash
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t 267673636159.dkr.ecr.us-east-1.amazonaws.com/pythonapp:latest \
+  --push .
+```
+
+This command does everything:
+
+Reads your Dockerfile
+Builds the AMD64 image
+Builds the ARM64 image
+Creates a multi-architecture manifest
+Pushes everything to ECR or dockerhub if the tag is username/app-name:version
